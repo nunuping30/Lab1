@@ -51,17 +51,16 @@ typedef struct _PortPin {
 
 //declare PortPin R,L
 PortPin R[4] = { { GPIOA, GPIO_PIN_10 }, { GPIOB, GPIO_PIN_3 }, { GPIOB,
-		GPIO_PIN_5 }, { GPIOB, GPIO_PIN_4 } };
+GPIO_PIN_5 }, { GPIOB, GPIO_PIN_4 } };
 
 PortPin L[4] = { { GPIOA, GPIO_PIN_9 }, { GPIOC, GPIO_PIN_7 }, { GPIOB,
-		GPIO_PIN_6 }, { GPIOA, GPIO_PIN_7 } };
+GPIO_PIN_6 }, { GPIOA, GPIO_PIN_7 } };
 
 //For Button Contenter  // create tuapeeee
 uint16_t ButtonMatrix = 0;
 
 uint32_t SumNumber = 0;
-uint32_t LastButton = 0 ;
-uint32_t Button = 1;
+uint32_t LastButton = 0;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -118,70 +117,82 @@ int main(void) {
 		/* USER CODE BEGIN 3 */
 		//Call function every 10 ms = 100Hz
 		static uint32_t timestamp = 0;
-		if (HAL_GetTick() >= timestamp)
-		{
+		if (HAL_GetTick() >= timestamp) {
 			timestamp = HAL_GetTick() + 10;
 			ReadMatrixButton_1Row();
 
+			if (LastButton == 0 && ButtonMatrix > 0)
+			{
+				if (ButtonMatrix == 8) // 0
+				{
+					SumNumber += 8;
+				}
 
-			if (ButtonMatrix ==  8 && Button = 1 && LastButton = 0  ) // 0
-			{
-				SumNumber += 8;
-			}
-			else if (ButtonMatrix == 4 && Button = 1 && LastButton = 0 ) // 1
-			{
-				SumNumber += 4 ;
-			}
-			else if (ButtonMatrix == 64 && Button = 1 && LastButton = 0  ) // 2
-			{
-				SumNumber += 64 ;
-			}
-			else if (ButtonMatrix == 1024 && Button = 1 && LastButton = 0 ) // 3
-			{
-				SumNumber += 1024 ;
-			}
-			else if (ButtonMatrix == 2 && Button = 1 && LastButton = 0 ) // 4
-			{
-				SumNumber += 2 ;
-			}
-			else if (ButtonMatrix == 32 && Button = 1 && LastButton = 0 ) // 5
-			{
-				SumNumber += 32 ;
-			}
-			else if (ButtonMatrix == 512 && Button = 1 && LastButton = 0 ) // 6
-			{
-				SumNumber += 512;
-			}
-			else if (ButtonMatrix == 1 && Button = 1 && LastButton = 0 ) // 7
-			{
-				SumNumber += 1 ;
-			}
-			else if (ButtonMatrix == 16 && Button = 1 && LastButton = 0 ) // 8
-			{
-				SumNumber += 16 ;
-			}
-			else if (ButtonMatrix == 256 && Button = 1 && LastButton = 0 ) // 9
-			{
-				SumNumber += 256 ;
+				else if (ButtonMatrix == 4) // 1
+				{
+					SumNumber += 4;
+				}
+
+				else if (ButtonMatrix == 64) // 2
+				{
+					SumNumber += 64;
+				}
+
+				else if (ButtonMatrix == 1024) // 3
+				{
+					SumNumber += 1024;
+				}
+
+				else if (ButtonMatrix == 2) // 4
+				{
+					SumNumber += 2;
+				}
+
+				else if (ButtonMatrix == 32) // 5
+				{
+					SumNumber += 32;
+				}
+
+				else if (ButtonMatrix == 512) // 6
+				{
+					SumNumber += 512;
+				}
+
+				else if (ButtonMatrix == 1) // 7
+				{
+					SumNumber += 1;
+				}
+
+				else if (ButtonMatrix == 16) // 8
+				{
+					SumNumber += 16;
+				}
+
+				else if (ButtonMatrix == 256) // 9
+				{
+					SumNumber += 256;
+				}
+
+				//LastButton = Button ;
+
+				if (ButtonMatrix == 4096) // clear
+					{
+					HAL_GPIO_WritePin(GPIOA, GPIO_PIN_5, RESET); // LED OFF
+					SumNumber = 0;
+					}
+
+				if ((ButtonMatrix == 32768) && (SumNumber == 2118)) // OK 64340500064
+					{
+
+					HAL_GPIO_WritePin(GPIOA, GPIO_PIN_5, SET); // LED ON
+					}
 			}
 
-			//LastButton = Button ;
-
-			if(ButtonMatrix == 4096 ) // clear
-			{
-				SumNumber = 0 ;
-			}
-
-			if((ButtonMatrix == 32768) && (SumNumber == 2118)) // OK 64340500064
-			{
-
-				HAL_GPIO_WritePin(GPIOA, GPIO_PIN_5, SET); // LED ON
-			}
-
-
+			LastButton = ButtonMatrix;
 		}
-		LastButton = Button ;
 	}
+
+
 	/* USER CODE END 3 */
 }
 
