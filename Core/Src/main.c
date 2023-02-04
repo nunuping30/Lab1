@@ -60,7 +60,8 @@ PortPin L[4] = { { GPIOA, GPIO_PIN_9 }, { GPIOC, GPIO_PIN_7 }, { GPIOB,
 uint16_t ButtonMatrix = 0;
 
 uint32_t SumNumber = 0;
-
+uint32_t LastButton = 0 ;
+uint32_t Button = 1;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -122,48 +123,51 @@ int main(void) {
 			timestamp = HAL_GetTick() + 10;
 			ReadMatrixButton_1Row();
 
-			if (ButtonMatrix ==  8) // 0
+
+			if (ButtonMatrix ==  8 && Button = 1 && LastButton = 0  ) // 0
 			{
 				SumNumber += 8;
 			}
-			else if (ButtonMatrix == 4 ) // 1
+			else if (ButtonMatrix == 4 && Button = 1 && LastButton = 0 ) // 1
 			{
 				SumNumber += 4 ;
 			}
-			else if (ButtonMatrix == 64 ) // 2
+			else if (ButtonMatrix == 64 && Button = 1 && LastButton = 0  ) // 2
 			{
 				SumNumber += 64 ;
 			}
-			else if (ButtonMatrix == 1024) // 3
+			else if (ButtonMatrix == 1024 && Button = 1 && LastButton = 0 ) // 3
 			{
 				SumNumber += 1024 ;
 			}
-			else if (ButtonMatrix == 2 ) // 4
+			else if (ButtonMatrix == 2 && Button = 1 && LastButton = 0 ) // 4
 			{
 				SumNumber += 2 ;
 			}
-			else if (ButtonMatrix == 32 ) // 5
+			else if (ButtonMatrix == 32 && Button = 1 && LastButton = 0 ) // 5
 			{
 				SumNumber += 32 ;
 			}
-			else if (ButtonMatrix == 512) // 6
+			else if (ButtonMatrix == 512 && Button = 1 && LastButton = 0 ) // 6
 			{
 				SumNumber += 512;
 			}
-			else if (ButtonMatrix == 1) // 7
+			else if (ButtonMatrix == 1 && Button = 1 && LastButton = 0 ) // 7
 			{
 				SumNumber += 1 ;
 			}
-			else if (ButtonMatrix == 16) // 8
+			else if (ButtonMatrix == 16 && Button = 1 && LastButton = 0 ) // 8
 			{
 				SumNumber += 16 ;
 			}
-			else if (ButtonMatrix == 256) // 9
+			else if (ButtonMatrix == 256 && Button = 1 && LastButton = 0 ) // 9
 			{
 				SumNumber += 256 ;
 			}
 
-			if(ButtonMatrix == 4096) // clear
+			//LastButton = Button ;
+
+			if(ButtonMatrix == 4096 ) // clear
 			{
 				SumNumber = 0 ;
 			}
@@ -176,7 +180,7 @@ int main(void) {
 
 
 		}
-
+		LastButton = Button ;
 	}
 	/* USER CODE END 3 */
 }
