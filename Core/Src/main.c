@@ -61,6 +61,9 @@ uint16_t ButtonMatrix = 0;
 
 uint32_t SumNumber = 0;
 uint32_t LastButton = 0;
+uint32_t FirstNumber = 0;
+uint32_t MidNumber = 0;
+uint32_t LastNumber = 0;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -145,17 +148,30 @@ int main(void) {
 
 				else if (ButtonMatrix == 2) // 4
 				{
+					if (SumNumber == 2116){
+						LastNumber += 1;
+					}
+
 					SumNumber += 2;
 				}
 
 				else if (ButtonMatrix == 32) // 5
 				{
+					if (SumNumber == 1548){ // 64340
+						MidNumber += 1;
+					}
+
 					SumNumber += 32;
 				}
 
 				else if (ButtonMatrix == 512) // 6
 				{
+					if(SumNumber == 0){
+						FirstNumber += 1;
+					}
+
 					SumNumber += 512;
+
 				}
 
 				else if (ButtonMatrix == 1) // 7
@@ -163,10 +179,11 @@ int main(void) {
 					SumNumber += 1;
 				}
 
-				else if (ButtonMatrix == 16) // 8
+				else if (ButtonMatrix == 16 ) // 8
 				{
 					SumNumber += 16;
 				}
+
 
 				else if (ButtonMatrix == 256) // 9
 				{
@@ -179,9 +196,12 @@ int main(void) {
 					{
 					HAL_GPIO_WritePin(GPIOA, GPIO_PIN_5, RESET); // LED OFF
 					SumNumber = 0;
+					FirstNumber = 0;
+					MidNumber = 0;
+					LastNumber = 0;
 					}
 
-				if ((ButtonMatrix == 32768) && (SumNumber == 2118)) // OK 64340500064
+				if ((ButtonMatrix == 32768) && (SumNumber == 2118) && (FirstNumber == 1 ) && (MidNumber == 1) && (LastNumber == 1)) // OK 64340500064
 					{
 
 					HAL_GPIO_WritePin(GPIOA, GPIO_PIN_5, SET); // LED ON
@@ -348,10 +368,13 @@ void ReadMatrixButton_1Row() {
 	//READ L1-L4
 	register int i;
 	for (i = 0; i < 4; i++) {
-		if (HAL_GPIO_ReadPin(L[i].PORT, L[i].PIN)) {
+		if (HAL_GPIO_ReadPin(L[i].PORT, L[i].PIN))
+		{
 			ButtonMatrix &= ~(1 << (X * 4 + i));
 
-		} else {
+		}
+		else
+		{
 			ButtonMatrix |= 1 << (X * 4 + i);
 
 		}
@@ -362,7 +385,7 @@ void ReadMatrixButton_1Row() {
 	//RESET RX+1%4
 	HAL_GPIO_WritePin(R[(X + 1) % 4].PORT, R[(X + 1) % 4].PIN, 0);
 	X++;
-	X %= 4;
+	X %= 4; // it is mod. eg. 4 %= 4 = 1 เศษ 0 ----> x = 0
 }
 /* USER CODE END 4 */
 
